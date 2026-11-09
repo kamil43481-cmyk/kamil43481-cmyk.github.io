@@ -1,0 +1,18 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hac & Umre Asistanı – Hesap Silme</title>
+<style>body{font-family:system-ui,sans-serif;max-width:560px;margin:2rem auto;padding:0 1rem;color:#1f2937}h1{font-size:1.4rem}input,button{width:100%;padding:.7rem;margin:.35rem 0;font-size:1rem;box-sizing:border-box}button{background:#065f46;color:#fff;border:0;border-radius:6px}button.sil{background:#b91c1c}.k{border:1px solid #e5e7eb;border-radius:8px;padding:1rem;margin:1rem 0}#m{font-weight:600}.gizli{display:none}small{color:#6b7280}</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body>
+<h1>Hac & Umre Asistanı – Hesap Silme</h1>
+<p>Uygulama: <b>Hac & Umre Asistanı</b> (com.hacumre.asistan) · Geliştirici: <b>Süleyman Zengin</b></p>
+<p>Bu sayfadan uygulamadaki hesabınızı ve hesabınıza bağlı verileri kalıcı olarak silebilirsiniz. Uygulama içinden de silebilirsiniz: Profil / KVKK bölümü → «Hesabımı sil».</p>
+<div class="k" id="a1"><b>1. Hesabınızı bulun</b><br><small>Uygulamada kullandığınız e-posta ve şifreyle giriş yapın.</small>
+<input id="e" type="email" placeholder="E-posta"><input id="p" type="password" placeholder="Şifre"><button id="g">Hesabı bul</button></div>
+<div class="k gizli" id="a2"><b>2. Silmeyi onaylayın</b><p>Hesap: <span id="ha"></span></p><p>Silinecekler: giriş hesabınız ve buna bağlı profil, kafile üyeliği, oda/bagaj/emanet kayıtlarınız ve diğer kişisel verileriniz. Bu işlem geri alınamaz.</p>
+<label><input type="checkbox" id="c" style="width:auto"> Hesabımın kalıcı olarak silinmesini onaylıyorum.</label><button class="sil" id="s">Hesabımı kalıcı olarak sil</button></div>
+<p id="m"></p>
+<p><small>Şifrenizi hatırlamıyorsanız veya telefonla kayıtlıysanız, kayıtlı e-postanızdan <b>szengin43@gmail.com</b> adresine «Hesap silme talebi» konulu e-posta gönderin; talep doğrulanıp silinir.</small></p>
+<script>
+const sb=supabase.createClient("https://juctjsjoxgrxkowpykfz.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1Y3Rqc2pveGdyeGtvd3B5a2Z6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM2NjQ1NjgsImV4cCI6MjEwOTI0MDU2OH0.rkhfMAqwfVLY3eahAbNlj8pVrKxecC3wS5PslIGhBt8");const m=t=>document.getElementById("m").textContent=t;
+document.getElementById("g").onclick=async()=>{m("");const {data,error}=await sb.auth.signInWithPassword({email:e.value.trim(),password:p.value});if(error){m("Hesap bulunamadı veya bilgiler hatalı.");return}ha.textContent=data.user.email;a1.classList.add("gizli");a2.classList.remove("gizli")};
+document.getElementById("s").onclick=async()=>{if(!c.checked){m("Lütfen onay kutusunu işaretleyin.");return}const {error}=await sb.rpc("delete_own_account");if(error){m("Silme başarısız: "+error.message);return}await sb.auth.signOut().catch(()=>{});a2.classList.add("gizli");m("Hesabınız ve ilişkili verileriniz silindi.")};
+</script></body></html>
